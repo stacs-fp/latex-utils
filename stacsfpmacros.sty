@@ -1,0 +1,230 @@
+%% ----------------------------------------------------------- [ Begin Package ]
+% Copyright 2015 - University of St Andrews, School of Computer
+% Science Functional Programming Group.
+%
+% This work may be distributed and/or modified under the  conditions
+% of the LaTeX Project Public License, either version 1.3c of this
+% license or (at your option) any later version.
+%
+% The latest version of this license can be found at:
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Jan de Muijnck-Hughes
+%
+% This work consists of the file: stacsfpmacros.sty
+% ---------------------------------------------------------------------- [ EOH ]
+\ProvidesPackage{stacsfpmacros}
+%
+% A LaTeX Style file containing various utilities for helping to
+% type-set various FP related things. The design of several functions
+% have been adapted from those seen with algorithm2e.
+%
+% The core principle behind the design of the utilities is the use of
+% math-mode to perform the type setting. All functions and commands
+% unless documented are to be used in math mode.
+%
+% ------------------------------------------------------------------ [ Options ]
+% Currently there are not class options.
+% ----------------------------------------------------------------- [ Packages ]
+\RequirePackage{etoolbox}
+
+\RequirePackage{xspace}
+\RequirePackage{fixmath}
+\RequirePackage[fixamsmath]{mathtools}
+
+\RequirePackage{amssymb}
+\RequirePackage{bussproofs}
+\RequirePackage{turnstile}
+
+% ------------------------------------------ [ Functions, Types, and Keywords. ]
+%
+% The following set of commands allow for function names, types, and
+% keywords to be typeset through definition of custom commands to
+% represent the items. The styling is controlled through macros that
+% can be redefined.
+%
+
+% ---------------------------------------------------------------- [ Types ]
+%
+% Default Type Style: Math TT
+\newcommand{\FPTypeSty}[1]{\mathtt{#1}}
+
+% Change the Type Style.
+%
+% For example:
+%    \SetFPTypeSty{mathbf}
+% or
+%    \newcommand{\MySty}[1]{\underline{\mathsf{#1}}}\SetFPTypeSty{MySty}
+%
+\newcommand{\SetFPTypeSty}[1]{%
+  \renewcommand{\FPTypeSty}[1]{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}{##1}}}
+
+% Declare a Type.
+%
+% For example: \MkType{\MyFoldr}{foldr}
+%
+\newcommand{\MkType}[2]{%
+  \newrobustcmd{#1}{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}%
+      {\ensuremath{\FPTypeSty{#2}}}\xspace}}
+
+
+% ---------------------------------------------------------------- [ Functions ]
+%
+% Default Function Style: Math SF
+\newcommand{\FPFuncSty}[1]{\mathsf{#1}}
+
+% Change the Function Style.
+%
+% For example:
+%    \SetFPFuncSty{mathtt}
+% or
+%    \newcommand{\MySty}[1]{\underline{\mathsf{#1}}}\SetFPFuncSty{MySty}
+
+\newcommand{\SetFPFuncSty}[1]{%
+  \renewcommand{\FPFuncSty}[1]{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}{##1}}}
+
+% Declare a Function.
+%
+% For example: \MkFunction{\MyFoldr}{foldr}
+%
+\newcommand{\MkFunction}[2]{%
+  \newrobustcmd{#1}{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}%
+      {\ensuremath{\FPFuncSty{#2}}}\xspace}}
+
+
+% ----------------------------------------------------------------- [ Keywords ]
+%
+% Default Keyword Style: Underline and Math SF
+\newcommand{\FPKwSty}[1]{\underline{\mathsf{#1}}}
+
+% Change the Keyword Style.
+%
+% For example:
+%    \SetFPKwSty{mathtt}
+% or
+%    \newcommand{\MySty}[1]{\underline{\mathsf{#1}}}\SetFPKwSty{MySty}
+%
+\newcommand{\SetFPKwSty}[1]{%
+  \renewcommand{\FPKwSty}[1]{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}{##1}}}
+
+% Declare a Keyword.
+%
+% For example: \MkKeyword{\MyFoldr}{foldr}
+%
+\newcommand{\MkKeyword}[2]{%
+  \newrobustcmd{#1}{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}%
+      {\ensuremath{\FPKwSty{#2}}}\xspace}}
+
+% ---------------------------------------------------------------- [ Operators ]
+
+% Declare an infix operator.
+\newcommand{\MkInfixOp}[2]{%
+  \newrobustcmd{#1}{%
+    \ensuremath{\;#2\;}\xspace}}
+
+% -------------------------------------------------- [ Abstract Syntax Helpers ]
+
+% Display the pipe symbol to mean alternate with spacing
+\newcommand{\alt}{\ensuremath{\;\mid\;}}
+\newcommand{\fpspace}{\ensuremath{\;}}
+
+% ------------------------------------------------------------- [ Math Helpers ]
+
+% Quick commands for type setting pairs, tuples, and sets.
+
+\newcommand{\tuple}[1]{\ensuremath{\langle#1\rangle}}
+\newcommand{\pair}[2]{\ensuremath{(#1,\fpspace#2)}}
+\newcommand{\set}[1]{\ensuremath{\{#1\}}}
+
+
+% Display a series
+%
+% Optional first argument to control counter.
+%
+% Examples:
+%
+% \series{x}    produces {x_{1},...,x_{n}}
+% \series[m]{x} produces {x_{1},...,x_{m}}
+\newcommand{\series}[2][n]{\ensuremath{\{#2_{1},\;\ldots,\;#2_{#1}\}}}
+
+% Display a series starting from Zero.
+%
+% Defined same as \series
+\newcommand{\seriesZ}[2][n]{\ensuremath{\set{#2_{0},\;\ldots,\;#2_{#1}}}}
+
+% Display an expression to be interpreted using the bracket style.
+%
+% \interpB{xs ++ ys} produces [[xs ++ ys]]
+%
+\newcommand{\interpB}[1]{\ensuremath{\llbracket#1\rrbracket}}
+
+% Display a series to be interpreted using the bracket style.
+%
+% Optional first argument to control counter.
+% \interpSB{x}    produces {[[x_{1}]],\ldots,[[x_{n}]]}
+% \interpSB[m]{x} produces {[[x_{1}]],\ldots,[[x_{m}]]}
+%
+\newcommand{\interpSB}[2][n]{\ensuremath{\{\interpB{#2_{1}},\;\ldots,\;\interpB{#2_{#1}}\}}}
+
+% Display a series to be interpreted using the bracket style and counting from zero.
+\newcommand{\interpSBZ}[2][n]{\ensuremath{\set{\interpB{#2_{0}},\;\ldots,\;\interpB{#2_{#1}}}}}
+
+
+% Same as above but using a the style: L(xs ++ ys)
+
+\newcommand{\interpL}[1]{\ensuremath{\mathcal{L}(#1)}}
+\newcommand{\interpLS}[2][n]{\ensuremath{\set{\interpL{#2_{1}},\;\ldots,\;\interpL{#2_{#1}}}}}
+\newcommand{\interpLSZ}[2][n]{\ensuremath{\set{\interpL{#2_{0}},\;\ldots,\;\interpL{#2_{#1}}}}}
+
+% Display a powerset.
+\newcommand{\powerset}[1]{\ensuremath{\wp(#1)}}
+
+
+% ------------------------------------------------------ [ Typing Rule Helpers ]
+
+\newcommand{\env}[1]{\ensuremath{\Gamma\;\vdash\;#1}}
+\newcommand{\envn}[2]{\ensuremath{\Gamma\;#1\vdash\;#2}}
+\newcommand{\typeList}{\ensuremath{\set{x_{}}}}
+
+% ----------------------------------------------------------- [ Text Functions ]
+% Commonly used functions.
+\MkFunction{\Enqueue}{enqueue}
+\MkFunction{\EnqueueM}{enqueue^{\star}}
+\MkFunction{\Dequeue}{dequeue}
+\MkFunction{\Append}{append}
+\MkFunction{\Children}{children}
+\MkFunction{\Max}{max}
+\MkFunction{\Min}{min}
+\MkFunction{\Vertices}{vertices}
+\MkFunction{\Foldr}{foldr}
+\MkFunction{\Map}{map}
+\MkFunction{\CMap}{concatMap}
+
+% ---------------------------------------------------------------- [ Operators ]
+% Commonly used operators
+\MkInfixOp{\AND}{\wedge}
+\MkInfixOp{\IOR}{\vee}
+\MkInfixOp{\XOR}{\oplus}
+\MkInfixOp{\APPEND}{\mid\mid}
+
+% -------------------------------------------------------------------- [ Types ]
+
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Int}{\ensuremath{\mathbb{Z}}}
+
+\MkType{\String}{String}
+\MkType{\NatTxt}{Nat}
+\MkType{\IntTxt}{Int}
+
+\endinput
+% ---------------------------------------------------------------------- [ EOF ]
