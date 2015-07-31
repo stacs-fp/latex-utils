@@ -48,6 +48,31 @@
 % can be redefined.
 %
 
+% ---------------------------------------------------------------- [ Enums ]
+%
+% Default Enum Style: Math TT
+\newcommand{\FPEnumSty}[1]{\mathsf{#1}}
+
+% Change the Enum Style.
+%
+% For example:
+%    \SetFPEnumSty{mathbf}
+% or
+%    \newcommand{\MySty}[1]{\underline{\mathsf{#1}}}\SetFPEnumSty{MySty}
+%
+\newcommand{\SetFPEnumSty}[1]{%
+  \renewcommand{\FPEnumSty}[1]{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}{##1}}}
+
+% Declare a Enum.
+%
+% For example: \MkEnum{\MyFoldr}{foldr}
+%
+\newcommand{\MkEnum}[2]{%
+  \newrobustcmd{#1}{%
+    \@ifnextchar\bgroup{\csname @#1\endcsname}%
+      {\ensuremath{\FPEnumSty{#2}}}\xspace}}
+
 % ---------------------------------------------------------------- [ Types ]
 %
 % Default Type Style: Math TT
@@ -95,9 +120,9 @@
 % For example: \MkFunction{\MyFoldr}{foldr}
 %
 \newcommand{\MkFunction}[2]{%
-  \newrobustcmd{#1}{%
+  \newrobustcmd{#1}[1]{%
     \@ifnextchar\bgroup{\csname @#1\endcsname}%
-      {\ensuremath{\FPFuncSty{#2}}}\xspace}}
+      {\ensuremath{\FPFuncSty{#2}(##1)\;}}\xspace}}
 
 
 % ----------------------------------------------------------------- [ Keywords ]
