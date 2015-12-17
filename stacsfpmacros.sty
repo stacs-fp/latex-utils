@@ -122,7 +122,7 @@
 \newcommand{\MkFunction}[2]{%
   \newrobustcmd{#1}[1]{%
     \@ifnextchar\bgroup{\csname @#1\endcsname}%
-      {\ensuremath{\FPFuncSty{#2}(##1)\;}}\xspace}}
+      {\ensuremath{\FPFuncSty{#2}\FPFuncSty{(}##1\FPFuncSty{)}\;}}\xspace}}
 
 
 % ----------------------------------------------------------------- [ Keywords ]
@@ -163,6 +163,8 @@
 \newcommand{\alt}{\ensuremath{\;\mid\;}}
 \newcommand{\fpspace}{\ensuremath{\;}}
 
+\newcommand{\StringLit}[1]{\ensuremath{\text{``#1''}}}
+
 % ------------------------------------------------------------- [ Math Helpers ]
 
 % Quick commands for type setting pairs, tuples, and sets.
@@ -191,7 +193,7 @@
 %
 % \interpB{xs ++ ys} produces [[xs ++ ys]]
 %
-\newcommand{\interpB}[1]{\ensuremath{\llbracket#1\rrbracket}}
+\newcommand{\interpB}[1]{\ensuremath{\llbracket\;#1\;\rrbracket}}
 
 % Display a series to be interpreted using the bracket style.
 %
@@ -205,7 +207,7 @@
 \newcommand{\interpSBZ}[2][n]{\ensuremath{\set{\interpB{#2_{0}},\;\ldots,\;\interpB{#2_{#1}}}}}
 
 
-% Same as above but using a the style: L(xs ++ ys)
+% Same as above but using the style: L(xs ++ ys)
 
 \newcommand{\interpL}[1]{\ensuremath{\mathcal{L}(#1)}}
 \newcommand{\interpLS}[2][n]{\ensuremath{\set{\interpL{#2_{1}},\;\ldots,\;\interpL{#2_{#1}}}}}
@@ -217,8 +219,27 @@
 
 % ------------------------------------------------------ [ Typing Rule Helpers ]
 
+% Wrap a definition inside an environment
+%
+% \env{x:Ty} produces \Gamma \vdash x:Ty
 \newcommand{\env}[1]{\ensuremath{\Gamma\;\vdash\;#1}}
+
+% Wrap a definition inside an environment with a named element.
+%
+% The named element is the first argument, the expression the second.
+%
+% \env{i:Nat}{x:Ty,i} produces \Gamma i:Nat \vdash x:Ty,i
 \newcommand{\envn}[2]{\ensuremath{\Gamma\;#1\vdash\;#2}}
+
+% Provide a type to a variable
+%
+% \ty{x}{Nat} produces x : Nat
+\newcommand{\ty}[2]{\ensuremath{#1\;\mathord{:}\;#2}}
+
+
+% Give a list of elements with the same type.
+%
+% \typeList{x}{Nat} produces {x_{1} : Nat,\ldots,x_{n}:Nat}
 \newcommand{\typeList}[2]{\ensuremath{\set{#1_{1}:#2,\ldots,#1_{n}:#2}}}
 
 % ----------------------------------------------------------- [ Text Functions ]
@@ -226,6 +247,11 @@
 \MkFunction{\Enqueue}{enqueue}
 \MkFunction{\EnqueueM}{enqueue^{\star}}
 \MkFunction{\Dequeue}{dequeue}
+\MkFunction{\Push}{push}
+\MkFunction{\PushM}{push^{\star}}
+\MkFunction{\Pop}{pop}
+\MkFunction{\Poll}{poll}
+\MkFunction{\Peek}{peek}
 \MkFunction{\Append}{append}
 \MkFunction{\Children}{children}
 \MkFunction{\Max}{max}
@@ -241,7 +267,8 @@
 \MkInfixOp{\IOR}{\vee}
 \MkInfixOp{\XOR}{\oplus}
 \MkInfixOp{\APPEND}{\mid\mid}
-
+\MkInfixOp{\TY}{:}
+\MkInfixOp{\MEQ}{\overset{?}{=}} % Maybe equal
 % -------------------------------------------------------------------- [ Types ]
 
 \newcommand{\Nat}{\ensuremath{\mathbb{N}}}
