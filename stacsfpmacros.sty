@@ -222,14 +222,14 @@
 % Wrap a definition inside an environment
 %
 % \env{x:Ty} produces \Gamma \vdash x:Ty
-\newcommand{\env}[1]{\ensuremath{\Gamma\;\vdash\;#1}}
+\newcommand{\env}[1]{\ensuremath{\Gamma\vdash#1}}
 
 % Wrap a definition inside an environment with a named element.
 %
 % The named element is the first argument, the expression the second.
 %
 % \env{i:Nat}{x:Ty,i} produces \Gamma i:Nat \vdash x:Ty,i
-\newcommand{\envn}[2]{\ensuremath{\Gamma\;#1\vdash\;#2}}
+\newcommand{\envn}[2]{\ensuremath{\Gamma#1\vdash#2}}
 
 % Provide a type to a variable
 %
@@ -241,6 +241,34 @@
 %
 % \typeList{x}{Nat} produces {x_{1} : Nat,\ldots,x_{n}:Nat}
 \newcommand{\typeList}[2]{\ensuremath{\set{#1_{1}:#2,\ldots,#1_{n}:#2}}}
+
+% ------------------------------------------------------------- [ eBNF Macroes ]
+
+\newcommand{\bnfPR}[1]{\ensuremath{\langle\text{\textsf{#1}}\rangle}}
+\newcommand{\bnfTerm}[1]{\ensuremath{\text{\texttt{\enquote{#1}}}}}
+\newcommand{\bnfSP}[1]{\ensuremath{,\;}}
+\newcommand{\bnfOR}[1]{\ensuremath{\;\mid\;}}
+
+\newcommand{\bnfComma}[1]{\bnfTerm{,}}
+\newcommand{\bnfColon}[1]{\bnfTerm{:}}
+\newcommand{\bnfSemi}[1]{\bnfTerm{;}}
+
+\newcommand{\bnfBetween}[3]{\ensuremath{#1\bnfSP{}#2\bnfSP{}#3}}
+\newcommand{\bnfBraces}[1]{\bnfBetween{\bnfTerm{\{}}{#1}{\bnfTerm{\}}}}
+\newcommand{\bnfParens}[1]{\bnfBetween{\bnfTerm{(}}{#1}{\bnfTerm{)}}}
+\newcommand{\bnfBrackets}[1]{\bnfBetween{\bnfTerm{[}}{#1}{\bnfTerm{]}}}
+\newcommand{\bnfSQuoted}[1]{\bnfBetween{\bnfTerm{\`}}{#1}{\bnfTerm{\'}}}
+\newcommand{\bnfDQuoted}[1]{\bnfBetween{\bnfTerm{"}}{#1}{\bnfTerm{"}}}
+
+\newcommand{\bnfLiteral}[1]{\bnfBetween{\bnfTerm{"""}}{#1}{\bnfTerm{"""}}}
+\newcommand{\bnfAlpha}{\ensuremath{\mathtt{[A-Za-z]}}}
+\newcommand{\bnfWord}{\bnfOnePlus{\bnfAlpha{}}}
+
+\newcommand{\bnfMany}[1]{\ensuremath{#1\star}}
+\newcommand{\bnfOnePlus}[1]{\ensuremath{#1+}}
+\newcommand{\bnfMaybe}[1]{\ensuremath{#1?}}
+\newcommand{\bnfList}[1]{\ensuremath{#1\bnfSP{}\bnfMany{(\bnfComma{}\bnfSP{}#1)}}}
+\newcommand{\bnfEOL}{\bnfTerm{\textbackslash r\textbackslash n}}
 
 % ----------------------------------------------------------- [ Text Functions ]
 % Commonly used functions.
